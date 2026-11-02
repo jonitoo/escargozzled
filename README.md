@@ -87,6 +87,27 @@ Rules:
 The level targets are defined in `LEVELS` in `index.html` (`target` for green,
 `rate`/`holdSec`/`noMinus` for orange and red).
 
+## Zombie sprints
+
+Zombies randomly appear **behind** the snail with a roar. Higher levels make
+attacks more frequent. The first 15 seconds and at least 18 seconds after each
+rescue are attack-free; attacks only start while riding.
+
+- A warning shows the distance to the horde, the required watts and the rescue
+  countdown. The fixed sprint target is at least **175 W**, and otherwise at
+  least **30% plus 40 W above your current/recent riding power**.
+- Below that target the zombies close in; above it you build distance.
+  Steering alone cannot escape them. The trainer measures **power**, not cadence:
+  pedal harder/faster to raise watts.
+- Getting caught costs **one life** and pushes the horde back; the chase continues.
+  The usual brief invulnerability also applies.
+- After **20 seconds of active gameplay**, a cannon blasts the whole horde away,
+  with sound and a flash. Normal play resumes without changing your score or level.
+- Ending/restarting the game clears the chase. Sounds require a click/key press.
+
+Run the chase regression tests with `node --test tests/zombie-chase.test.cjs`
+(no additional dependencies).
+
 ## Game time & highscores
 
 - The game time runs from page load or "Neues Spiel" (new game).
@@ -111,6 +132,7 @@ runs, only saving scores fails.
 - **Speed** via the power of the Elite Avanti (watts).
 - **Steering** with the Elite Sterzo Smart.
 - Without hardware: arrow keys ↑/↓ for watts, ←/→ for steering.
+  ↑ adds 25 W without an upper cap, so sprint targets remain reachable.
 - Sounds only start after the first click or key press (browser policy).
 
 ## Customizing
