@@ -3,6 +3,16 @@
 Ride your racing snail 🐌 down the road and collect drinks. A drink counts as hit
 when it reaches the snail's height and overlaps with it sideways.
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/gameplay.png" alt="Gameplay: the snail racing down the road" width="49%">
+  <img src="docs/screenshots/zombie-chase.png" alt="Zombie horde approaching from behind" width="49%">
+</p>
+<p align="center">
+  <img src="docs/screenshots/cannon-rescue.png" alt="The cannon blasts away the zombies" width="49%">
+</p>
+
 ## Drinks
 
 | Drink             | Points | Look                                   | Sound              | Frequency |
