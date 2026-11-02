@@ -45,6 +45,9 @@ You start with **5 lives**. Walls with hazard stripes keep showing up:
 - **Wide walls** block the road from one edge; there is always a gap on the
   other side.
 
+With every level the walls come a bit more often (shorter distance between
+them), but never so close that the road is fully blocked.
+
 Hitting a wall costs one life (crash sound, screen shake). Afterwards the snail
 blinks for 1.5 s and is invulnerable during that time. At 0 lives the game ends
 ("💥 Keine Leben mehr!" – no lives left) and the score can be saved.
@@ -117,4 +120,4 @@ in `DRINKS` in `index.html`. The frequency is `weight` relative to the sum of al
 weights (currently 98).
 
 Lives and walls: `MAX_LIVES`, `INVULNERABLE_MS`, `spawnWall()` (width/position) and
-`respawnWall()` (distance between walls) in `index.html`.
+`wallGap()` (distance between walls per level) in `index.html`.

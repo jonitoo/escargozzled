@@ -831,7 +831,15 @@
     }
 
     // x/hw in Straßen-Einheiten (-1 = linker, +1 = rechter Rand)
-    const walls = [{}, {}];
+    const walls = [{}, {}, {}, {}];
+    // Mindestabstand, damit nie beide Seiten gleichzeitig zu sind
+    const WALL_MIN_GAP = 900;
+
+    // Abstand zur nächsten Mauer schrumpft mit jedem Level → mehr Mauern
+    function wallGap() {
+        const base = 2400 * Math.pow(0.93, levelIdx);
+        return Math.max(WALL_MIN_GAP, base * (0.6 + Math.random() * 0.8));
+    }
 
     function spawnWall(w, z) {
         w.z = z;
@@ -848,14 +856,16 @@
     }
 
     function respawnWall(w) {
-        // Abstand zur anderen Mauer, damit nie beide Seiten gleichzeitig zu sind
-        const other = walls.find(o => o !== w);
-        spawnWall(w, Math.max(Z_FAR + 1500 + Math.random() * 3000, other.z + 900));
+        const farthest = Math.max(...walls.filter(o => o !== w).map(o => o.z));
+        spawnWall(w, Math.max(Z_FAR + 200, farthest + wallGap()));
     }
 
     function resetWalls() {
-        spawnWall(walls[0], Z_FAR + 600);
-        spawnWall(walls[1], Z_FAR + 1600);
+        let z = Z_FAR + 600;
+        for (const w of walls) {
+            spawnWall(w, z);
+            z += wallGap();
+        }
     }
 
     resetWalls();
