@@ -13,7 +13,9 @@ function game() {
     const element = () => ({
         textContent: '', value: '', style: {}, hidden: true,
         classList: { add() {}, remove() {} },
-        addEventListener() {}, setAttribute() {}, focus() {},
+        listeners: {},
+        addEventListener(type, listener) { this.listeners[type] = listener; },
+        setAttribute() {}, focus() {},
         replaceChildren() {},
         insertRow: () => ({ appendChild() {} }),
         appendChild(child) { return child; },
@@ -41,6 +43,33 @@ function game() {
     vm.runInContext(script, context);
     return (code) => vm.runInContext(code, context);
 }
+
+test('manual button bypasses cooldown, prevents overlapping waves and becomes available again', () => {
+    const run = game();
+    run('currentWatts = 200; btnZombie.listeners.click()');
+    assert.ok(run('chase !== null'));
+    assert.equal(run('chase.targetWatts'), 300);
+    assert.equal(run('btnZombie.disabled'), true);
+    run('chase.elapsedMs = 1000; btnZombie.listeners.click()');
+    assert.equal(run('chase.elapsedMs'), 1000);
+    run('fireCannon(); btnZombie.listeners.click()');
+    assert.equal(run('chase'), null);
+    run('updateChase(1500, 100000, 640, 688); updateChase(0, 100000, 640, 688)');
+    assert.equal(run('btnZombie.disabled'), false);
+    run('btnZombie.listeners.click()');
+    assert.ok(run('chase !== null'));
+    run('newGame(); updateChase(0, 100000, 640, 688)');
+    assert.equal(run('btnZombie.disabled'), false);
+});
+
+test('manual waves are blocked after game over, victory or losing all lives', () => {
+    for (const condition of ['endGame()', 'gameWon = true', 'lives = 0']) {
+        const run = game();
+        run(`${condition}; updateChase(0, 100000, 640, 688); btnZombie.listeners.click()`);
+        assert.equal(run('chase'), null);
+        assert.equal(run('btnZombie.disabled'), true);
+    }
+});
 
 test('sprint target exceeds current/recent power and stays fixed', () => {
     const run = game();
